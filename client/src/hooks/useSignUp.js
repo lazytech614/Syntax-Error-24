@@ -1,9 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { setAuthUser } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -33,7 +36,7 @@ const useSignUp = () => {
 
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data));
-        // setAuthUser(data);
+        setAuthUser(data);
         toast.success("Signup successful!");
         navigate("/");
       }

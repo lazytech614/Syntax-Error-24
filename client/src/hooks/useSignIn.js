@@ -3,12 +3,14 @@ import toast from "react-hot-toast";
 // import { useAuthContext } from "../context/AuthContext";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useUserInfoContext } from "../contexts/userInfoContext";
 
 const useSignIn = () => {
   //   console.log("Inside useSignIn hook");
   const [isLoading, setIsLoading] = useState(false);
 
   const { setAuthUser } = useAuthContext();
+  const { fetchUserData } = useUserInfoContext();
 
   const navigate = useNavigate();
 
@@ -37,6 +39,7 @@ const useSignIn = () => {
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data));
         setAuthUser(data);
+        fetchUserData(data._id);
         navigate("/"); // Navigate only if signIn is successful
       } else {
         throw new Error(data.message); // Use the message from the server response
