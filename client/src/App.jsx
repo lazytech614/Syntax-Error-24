@@ -4,12 +4,16 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/Signin";
 import { Toaster } from "react-hot-toast";
+import { useAuthContext } from "./contexts/AuthContext";
 
 const App = () => {
+
+  const {authUser} = useAuthContext();
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={authUser ? <Home /> : <SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
       </Routes>

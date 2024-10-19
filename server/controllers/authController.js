@@ -5,7 +5,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 // Signup controller
 export const signUp = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     const {
       fullName,
@@ -72,7 +72,7 @@ export const signUp = async (req, res) => {
 // signin controller
 export const signIn = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { userName, password } = req.body;
 
@@ -102,5 +102,15 @@ export const signIn = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal server error", success: 0 });
+  }
+};
+
+export const logOut = (req, res) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

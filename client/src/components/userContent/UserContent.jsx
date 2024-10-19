@@ -1,7 +1,10 @@
 import React from 'react'
 import menuBar from '/menu-bar.svg'
+import useLogOut from '../../hooks/useLogOut'
 
 const UserContent = ({toggleMenu}) => {
+    const {isLoading, logOut} = useLogOut();
+
   return (
       <div className='hidden md:flex w-[100%] md:w-[30%] flex-col gap-2'>
         <div className='flex md:flex-col justify-between h-fit w-full bg-white rounded-md p-4'>
@@ -20,7 +23,7 @@ const UserContent = ({toggleMenu}) => {
         <div className='hidden md:flex h-fit w-full bg-white rounded-md p-4 flex-col gap-4'>
           <button className='h-[30px] w-[40%] bg-[#0a66c2] text-white rounded-sm px-2 py-1'>Profile details</button>
           <button className='h-[30px] w-[40%] bg-[#0a66c2] text-white rounded-sm px-2 py-1'>Upload files</button>
-          <button className='h-[30px] w-[40%] bg-[#0a66c2] text-white rounded-sm px-2 py-1'>Log Out</button>
+          <button onClick={() => logOut()} className='h-[30px] w-[40%] bg-[#0a66c2] text-white rounded-sm px-2 py-1'>Log Out</button>
         </div>
       </div>
   )
