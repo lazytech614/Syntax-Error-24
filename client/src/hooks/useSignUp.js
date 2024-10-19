@@ -1,9 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
-  //   console.log("Inside useSignUp hook");
+
+  const navigate = useNavigate();
 
   const signup = async (formData) => {
     // console.log("Inside signup function");
@@ -33,6 +35,7 @@ const useSignUp = () => {
         localStorage.setItem("user", JSON.stringify(data));
         // setAuthUser(data);
         toast.success("Signup successful!");
+        navigate("/");
       }
 
       if (!data.success) toast.error(data.error);
