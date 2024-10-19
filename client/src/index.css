@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    background-color: #F3F2F0;
+}
+
+input{
+    outline: none;
+}
+
+input::placeholder {
+    color: black; /* Change to red */
+    opacity: 1; /* Ensures full opacity */
+}
+
+/* Custom scrollbar hiding */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }

@@ -1,67 +1,57 @@
-import React from "react";
-import Icons from "../component/Icons";
+import React, { useState, useEffect } from 'react';
+import menuBar from '/menu-bar.svg';
+import searchIcon from '/search-icon.svg';
+import thumbsUpFill from '/thumb-up-fill.svg';
+import thumbsUpLine from '/thumb-up-line.svg';
+import thumbsDownLine from '/thumb-down-line.svg';
+import thumbsDownFill from '/thumb-down-fill.svg';
+import comment from '/comment.svg';
+import Sidebar from '../components/Sidebar/Sidebar';
+import UserContent from '../components/userContent/UserContent';
+import FeedCard from '../components/feedCard/FeedCard';
+import SearchBar from '../components/search/SearchBar';
+
 const Home = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false); // State to track expanded description
+  const [users, setUsers] = useState([])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded); // Toggle expanded state
+  };
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_SERVER_URL}/api/users`)
+      .then((res) => res.json()).then((data) => setUsers(data))
+  }, [])
+
+  // console.log(users);
+
   return (
-    <div className="flex justify-between h-screen p-4 gap-2">
-      <div className="div1 border-2 w-[30%] p-2">
-        <div className="profile flex flex-col p-2">
-          <img
-            src="../public/img.jpg"
-            className="w-10 h-10 rounded-full"
-            alt=""
-          />
+    <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-20 py-10'>
+      {/* Sidebar */}
+      <Sidebar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
-          <h3 className="text-xl">Sahil yuvraj kamble</h3>
-          <p>College name</p>
-        </div>
+      {/* Main Content */}
+      <UserContent toggleMenu={toggleMenu} />
 
-        <div className="btns flex justify-between gap-2">
-          <button className="bg-sky-700 p-2 text-white rounded">Profile</button>
-          <button className="bg-sky-700 p-2 text-white rounded">
-            Edit profile
-          </button>
-        </div>
-        <button className="bg-sky-700 p-2 text-white rounded mt-4">
-          Upload Notes
-        </button>
-        <button className="bg-sky-700 p-2 text-white rounded ">Logout</button>
-      </div>
-      <div className="div2 border-2 w-[70%] p-2 flex flex-col">
-        <div className="flex gap-2">
-          <img
-            src="./public/img.jpg"
-            className="w-10 h-10 rounded-full"
-            alt=""
-          />
-          <input
-            type="text"
-            className="border-2 rounded-full p-2 w-[100%]"
-            placeholder="You can search here"
-          />
-        </div>
-
-        <div className="flex flex-row gap-4 p-4">
-          <img
-            src="../public/img2.jpg"
-            className="w-12 h-12 rounded-full "
-            alt=""
-          />
-          <div className="flex flex-col">
-            <h3 className="text-xl">Rupanjan de</h3>
-            <p>IIT Roorkee</p>
-          </div>
-        </div>
-        <p className="ml-6">Title of the post will be here</p>
-        <p className="ml-6">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem libero
-          nostrum aliquam! Eligendi eius ut laboriosam quae consequatur debitis
-          minus, accusamus earum et? Pariatur officiis soluta autem sapiente
-          velit laudantium provident? Porro incidunt illo eius ipsa veniam
-          accusamus alias quidem, harum ipsum reprehenderit dolore ad ab amet
-          possimus ullam ut!
-        </p>
-        <div className="p-4">
-          <Icons />
+      {/* Feed Content */}
+      <div className='w-[100%] md:w-[70%] flex flex-col gap-4'>
+        <SearchBar toggleMenu={toggleMenu} />
+        <div className='h-[1px] w-full bg-gray-300'></div>
+        <div className='overflow-y-auto rounded-md h-[80vh] md:h-fit hide-scrollbar scroll-smooth'>
+          {users.map((user, index) => (
+            <FeedCard key={index} toggleDescription={toggleDescription} isDescriptionExpanded={isDescriptionExpanded} 
+            fullName={user.fullName}
+            collegeName={user.collegeName}
+            city={user.city}
+            profilePic={user.profilePic}
+            />
+          ))}
         </div>
       </div>
     </div>
