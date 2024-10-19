@@ -10,7 +10,7 @@ const useGetUsers = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/api/users`
+        `${import.meta.env.VITE_SERVER_URL}/api/users/allusers`
       );
       const data = await response.json();
       setUsers(data);
