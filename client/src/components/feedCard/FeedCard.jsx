@@ -4,6 +4,7 @@ import thumbsUpLine from '/thumb-up-line.svg';
 import thumbsDownLine from '/thumb-down-line.svg';
 import thumbsDownFill from '/thumb-down-fill.svg';
 import comment from '/comment.svg';
+import download from '/download-line.svg';
 
 const FeedCard = ({toggleDescription, isDescriptionExpanded, fullName, collegeName, city, profilePic}) => {
   return (
@@ -20,7 +21,7 @@ const FeedCard = ({toggleDescription, isDescriptionExpanded, fullName, collegeNa
             {/* Description Section */}
             <div 
               onClick={toggleDescription} 
-              className={`description ${!isDescriptionExpanded ? 'line-clamp-3' : ''} cursor-pointer relative`}
+              className={`description ${!isDescriptionExpanded ? 'line-clamp-3' : ''} cursor-pointer relative text-[12px] sm:text-[16px]`}
               title="Click to expand/collapse"
             >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto eius dolores possimus natus, ipsa, dolor, explicabo pariatur consectetur accusamus saepe voluptate atque laborum sint officia. Quaerat hic vitae eos iure.
@@ -32,10 +33,11 @@ const FeedCard = ({toggleDescription, isDescriptionExpanded, fullName, collegeNa
             </div>
             <div className='pdf-preview'>PDF PREVIEW</div>
             <div className='h-[1px] w-full bg-gray-300'></div>
-            <div className='flex gap-4'>
+            <div className='relative flex gap-4'>
               <img className='h-[20px] cursor-pointer' src={thumbsUpLine} alt="" />
               <img className='h-[20px] cursor-pointer' src={thumbsDownLine} alt="" />
               <img className='h-[20px] cursor-pointer' src={comment} alt="" />
+              <img className='absolute right-0 h-[20px] cursor-pointer' src={download} alt="" />
             </div>
           </div>
   )

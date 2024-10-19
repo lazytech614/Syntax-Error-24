@@ -23,7 +23,7 @@ const Home = () => {
   }, [getUsers]);
 
   return (
-    <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-20 py-10'>
+    <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 py-6 sm:py-10'>
       {/* Sidebar */}
       <Sidebar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
