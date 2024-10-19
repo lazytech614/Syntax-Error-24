@@ -4,23 +4,40 @@ import UserContent from '../components/userContent/UserContent';
 import FeedCard from '../components/feedCard/FeedCard';
 import SearchBar from '../components/search/SearchBar';
 import useGetUsers from '../hooks/useGetUsers';
+import { useFeedContext } from '../contexts/FeedContext';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [expandedNoteId, setExpandedNoteId] = useState(null); // State for expanded note
   const { getUsers, isLoading, users } = useGetUsers();
+  const [searchQuery, setSearchQuery] = useState('');
+  const { feed } = useFeedContext();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const toggleDescription = () => {
-    setIsDescriptionExpanded(!isDescriptionExpanded);
+  const toggleDescription = (noteId) => {
+    setExpandedNoteId(expandedNoteId === noteId ? null : noteId); // Toggle the expanded state for the note
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
   };
 
   useEffect(() => {
-    getUsers(); // Only called once when the component mounts
+    getUsers();
   }, [getUsers]);
+
+
+  const filteredFeed = feed.filter((note) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return (
+      note.title.toLowerCase().includes(lowerCaseQuery) ||
+      note.name.toLowerCase().includes(lowerCaseQuery) ||
+      note.code.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
 
   return (
     <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 lg:px-40 py-6 sm:py-10'>
@@ -32,21 +49,30 @@ const Home = () => {
 
       {/* Feed Content */}
       <div className='w-full md:w-[70%] flex flex-col gap-4'>
-        <SearchBar toggleMenu={toggleMenu} />
+        <SearchBar toggleMenu={toggleMenu} onSearch={handleSearch}/>
         <div className='h-[1px] w-full bg-gray-300'></div>
         <div className='overflow-y-auto rounded-md h-[80vh] md:h-fit hide-scrollbar scroll-smooth'>
-          {isLoading ? (
-            <div>Loading...</div>
+          {feed.length === 0 ? (
+            <div>No notes available...</div>
           ) : (
-            users.map((user, index) => (
+            filteredFeed.length > 0 && filteredFeed.map((note, index) => (
               <FeedCard 
                 key={index} 
-                toggleDescription={toggleDescription} 
-                isDescriptionExpanded={isDescriptionExpanded} 
-                fullName={user.fullName}
-                collegeName={user.collegeName}
-                city={user.city}
-                profilePic={user.profilePic}
+                noteId={note._id}
+                toggleDescription={() => toggleDescription(note._id)} 
+                isDescriptionExpanded={expandedNoteId === note._id} 
+                fullName={note?.authorId?.fullName} 
+                branch={note?.authorId?.branch}
+                collegeName={note?.authorId?.collegeName} 
+                city={note?.authorId?.city} 
+                profilePic={note?.authorId?.profilePic}
+                title={note?.title}
+                content={note?.content}
+                name={note?.name}
+                description={note?.description}
+                Id={note._id}
+                initialLikes={note.likes}
+                initialDislikes={note.dislikes}
               />
             ))
           )}

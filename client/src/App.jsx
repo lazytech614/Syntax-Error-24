@@ -6,8 +6,11 @@ import SignIn from "./pages/Signin";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./contexts/AuthContext";
 import ProfileInfo from "./pages/ProfileInfo";
+import UploadNote from "./pages/UploadNote";
 
 const App = () => {
+
+  
 
   const {authUser} = useAuthContext();
 
@@ -18,6 +21,7 @@ const App = () => {
         <Route path="/profile" element={authUser ? <ProfileInfo /> : <SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/upload-note" element={authUser ? <UploadNote /> : <SignIn />} />
       </Routes>
       <Toaster />
     </BrowserRouter>

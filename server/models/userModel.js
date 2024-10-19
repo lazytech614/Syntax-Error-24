@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId], // Array of ObjectIds referencing posts
       default: [], // Default value is an empty array
     },
+    rating: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

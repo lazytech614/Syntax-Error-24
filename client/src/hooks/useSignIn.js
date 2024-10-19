@@ -39,8 +39,8 @@ const useSignIn = () => {
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data));
         setAuthUser(data);
-        fetchUserData(data._id);
         navigate("/"); // Navigate only if signIn is successful
+        fetchUserData(data._id);
       } else {
         throw new Error(data.message); // Use the message from the server response
       }

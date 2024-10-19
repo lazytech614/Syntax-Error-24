@@ -2,11 +2,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useUserInfoContext } from "../contexts/userInfoContext";
 
 const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { setAuthUser } = useAuthContext();
+  const { fetchUserData } = useUserInfoContext();
 
   const navigate = useNavigate();
 
@@ -29,6 +31,7 @@ const useSignUp = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           method: "POST",
           body: JSON.stringify(formData),
         }
@@ -39,6 +42,7 @@ const useSignUp = () => {
         setAuthUser(data);
         toast.success("Signup successful!");
         navigate("/");
+        fetchUserData(data._id);
       }
 
       if (!data.success) toast.error(data.error);

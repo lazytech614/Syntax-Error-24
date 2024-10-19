@@ -4,12 +4,15 @@ import App from './App.jsx'
 import './index.css'
 import { AuthContextProvider } from './contexts/AuthContext.jsx'
 import { UserInfoContextProvider } from './contexts/userInfoContext.jsx'
+import { FeedContextProvider } from './contexts/FeedContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthContextProvider>
       <UserInfoContextProvider>
-        <App />
+        <FeedContextProvider>
+          <App />
+        </FeedContextProvider>
       </UserInfoContextProvider>
     </AuthContextProvider>
   </StrictMode>,
