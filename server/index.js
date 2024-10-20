@@ -1,4 +1,6 @@
 import express from "express";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -61,7 +63,8 @@ app.use("/api/users", userRoutes);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads");
+    return cb(null,
+      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
   },
   filename: function (req, file, cb) {
     const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
