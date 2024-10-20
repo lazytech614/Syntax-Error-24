@@ -28,7 +28,26 @@ const port = process.env.PORT || 5000;
 // console.log(process.env.MONGODB_URL);
 
 app.use("/uploads", express.static("uploads"));
-app.use(cors({ credentials: true, origin: '*' }));
+// app.use(cors({ credentials: true, origin: '*' }));
+const allowedOrigins = [
+  "http://localhost:5173", // Local development
+  "https://spontaneous-stardust-0bdf9a.netlify.app", // Netlify production
+];
+
+// CORS configuration
+app.use(cors({
+  credentials: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error("Not allowed by CORS")); // Block the request
+    }
+  },
+}));
 app.use(express.json());
 app.use(cookieParser());
 
