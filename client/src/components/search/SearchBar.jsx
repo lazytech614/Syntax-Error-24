@@ -12,8 +12,8 @@ const SearchBar = ({ toggleMenu, onSearch }) => {
   };
 
   return (
-    <div className='bg-white rounded-md h-fit p-4 flex justify-center items-center gap-2'>
-      <img onClick={toggleMenu} className='md:hidden w-[44px] cursor-pointer' src={userInfo?.profilePic} alt="" />
+    <div className='bg-white rounded-md h-fit p-4 flex justify-center items-center gap-2 border-[1px] border-gray-300'>
+      <img onClick={toggleMenu} className='md:hidden w-[44px] cursor-pointer border-2 border-[#0a66c2] rounded-full' src={userInfo?.profilePic} alt="" />
       <form onSubmit={handleSearch} className='w-full h-[40px] lg:h-[50px] flex gap-1 sm:gap-0 justify-center items-center'>
         <input
           value={searchQuery}

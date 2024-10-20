@@ -46,7 +46,7 @@ const FeedCard = ({ noteId, toggleDescription, isDescriptionExpanded, content, f
   };
 
   return (
-    <div className='card h-fit flex flex-col gap-2 bg-white rounded-md p-4 mb-4'>
+    <div className='card h-fit flex flex-col gap-2 bg-white rounded-md p-4 mb-4 border-[1px] border-gray-300'>
       <div className='flex gap-4'>
         <img className='h-[60px] border-2 border-[#0a66c2] rounded-full' src={profilePic} alt="" />
         <div>
@@ -59,13 +59,14 @@ const FeedCard = ({ noteId, toggleDescription, isDescriptionExpanded, content, f
         <p className='font-semibold text-gray-700'>{name}</p>
         <p className='text-gray-500 text-[14px]'>{title}</p>
       </div>
+      <div className='h-[1px] w-full bg-gray-300'></div>
       <div
         onClick={toggleDescription}
         className={`description ${!isDescriptionExpanded ? 'line-clamp-3' : ''} cursor-pointer relative text-[12px] sm:text-[16px]`}
         title="Click to expand/collapse"
       >
         {description}
-        {!isDescriptionExpanded && <span className='absolute right-0 bottom-0'>...</span>}
+        {/* {!isDescriptionExpanded && <span className='absolute right-0 bottom-0'>...</span>} */}
       </div>
       <div className='h-[400px] overflow-hidden'>{imageUrl ? <img className='w-full bg-cover' src={imageUrl} alt="" /> : <img className='w-full bg-cover' src="https://th.bing.com/th/id/R.812ae5dbc4266a4d4e385ad6dd2c6028?rik=uIYfGPeflv4hBQ&riu=http%3a%2f%2fwww.pptgrounds.com%2fwp-content%2fuploads%2f2014%2f02%2fStudy-Book-and-Lights-Templates.jpg&ehk=dxZ54u5uxLJnMcnZUPFarIIfirGHwNeTbRW6OZQR%2f%2fk%3d&risl=&pid=ImgRaw&r=0" alt="" />}</div>
       <div className='h-[1px] w-full bg-gray-300'></div>
