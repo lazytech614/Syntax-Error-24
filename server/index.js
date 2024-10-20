@@ -17,13 +17,14 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import FormData from "form-data";
 
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
 
-dotenv.config();
 // console.log(process.env.MONGODB_URL);
 
 app.use("/uploads", express.static("uploads"));
