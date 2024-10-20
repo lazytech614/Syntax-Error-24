@@ -11,7 +11,7 @@ const ProfileInfo = () => {
   return (
         <div className="bg-[#F3F2F0] w-[100%]  flex flex-col justify-center px-6 gap-2 sm:px-20 lg:px-40 py-6 sm:py-10">
           <img
-            src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
+            src={userInfo?.profilePic}
             className="w-[160px]"
             alt=""
           />

@@ -15,11 +15,16 @@ const UserContent = ({toggleMenu}) => {
   return (
       <div className='hidden md:flex w-[100%] md:w-[30%] flex-col gap-2'>
         <div className='flex md:flex-col justify-between h-fit w-full bg-white rounded-md p-4'>
-          <img className='w-[80px]' src={userInfo?.profilePic} alt="" />
+          <img className='w-[80px] border-2 border-[#0a66c2] rounded-full' src={userInfo?.profilePic} alt="" />
           <div className='hidden md:block'>
             <p className='font-semibold text-[20px]'>{userInfo?.fullName}</p>
             <p className='text-gray-700'>{userInfo?.collegeName}</p>
-            <p className='text-gray-500'>{userInfo?.city}</p>
+            <div className='flex gap-1'>
+              <p className='text-gray-700'>{userInfo?.branch} || </p> 
+              <p className='text-gray-700'>{userInfo?.year} year</p>
+            </div>
+            <p className='text-gray-500'>Resident of: {userInfo?.city}</p>
+
           </div>
           <img onClick={toggleMenu} className='block md:hidden w-[30px] cursor-pointer' src={menuBar} alt="" />
         </div>

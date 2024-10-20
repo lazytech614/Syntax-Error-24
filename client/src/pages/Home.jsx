@@ -40,7 +40,7 @@ const Home = () => {
   });
 
   return (
-    <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 lg:px-40 py-6 sm:py-10'>
+    <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 lg:px-40 xl:px-60 py-6'>
       {/* Sidebar */}
       <Sidebar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
@@ -48,7 +48,7 @@ const Home = () => {
       <UserContent toggleMenu={toggleMenu} />
 
       {/* Feed Content */}
-      <div className='w-full md:w-[70%] flex flex-col gap-4'>
+      <div className='w-full md:w-[70%] flex flex-col gap-2'>
         <SearchBar toggleMenu={toggleMenu} onSearch={handleSearch}/>
         <div className='h-[1px] w-full bg-gray-300'></div>
         <div className='overflow-y-auto rounded-md h-[80vh] md:h-fit hide-scrollbar scroll-smooth'>
