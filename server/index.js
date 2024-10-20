@@ -28,7 +28,7 @@ const port = process.env.PORT || 5000;
 // console.log(process.env.MONGODB_URL);
 
 app.use("/uploads", express.static("uploads"));
-app.use(cors({ credentials: true, origin: "https://spontaneous-stardust-0bdf9a.netlify.app/" }));
+app.use(cors({ credentials: true, origin: '*' }));
 app.use(express.json());
 app.use(cookieParser());
 
