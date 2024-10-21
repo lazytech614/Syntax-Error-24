@@ -32,19 +32,21 @@ const allowedOrigins = [
 ];
 
 // CORS configuration
-app.use(cors({
-  credentials: true,
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true); // Allow the request
-    } else {
-      callback(new Error("Not allowed by CORS")); // Block the request
-    }
-  },
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("Not allowed by CORS")); // Block the request
+      }
+    },
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -58,7 +60,7 @@ app.use("/api/users", userRoutes);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-   cb(null, "./uploads");
+    cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
     const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
