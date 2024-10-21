@@ -28,7 +28,7 @@ app.use("/uploads", express.static("uploads"));
 // app.use(cors({ credentials: true, origin: '*' }));
 const allowedOrigins = [
   "http://localhost:5173", // Local development
-  "https://sytax-error24-note-sphere.netlify.app/", // Netlify production
+  "https://spontaneous-stardust-0bdf9a.netlify.app/", // Netlify production
 ];
 
 // CORS configuration
