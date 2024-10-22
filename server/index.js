@@ -5,27 +5,17 @@ import userRoutes from "./routes/userRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import connectToMongoDb from "./db/connectToMongodb.js";
 import cookieParser from "cookie-parser";
-import multer from "multer";
 import cors from "cors";
 import Note from "./models/noteModel.js";
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
 import User from "./models/userModel.js";
-// import Note from "./models/noteModel.js";
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
-import FormData from "form-data";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// console.log(process.env.MONGODB_URL);
-
 app.use("/uploads", express.static("uploads"));
-// app.use(cors({ credentials: true, origin: '*' }));
+
 const allowedOrigins = [
   "http://localhost:5173", // Local development
   "https://spontaneous-stardust-0bdf9a.netlify.app/", // Netlify production
@@ -56,114 +46,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-// app.use("/api/upload", uploadRoutes);
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-  filename: function (req, file, cb) {
-    const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniquePrefix + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-// const noteSchema = mongoose.model(Note);
-
-app.get("/test-pdf", (req, res) => {
-  res.sendFile(__dirname + "/uploads/1729359377191-334566132Tutorial 4.pdf"); // Adjust the path as needed
-});
-
-// app.post("/api/upload-pdf", upload.single("file"), async (req, res) => {
-//   try {
-//     const token = req.cookies.jwt;
-//     const secretKey = process.env.JWT_SECRET_KEY;
-//     let userId;
-
-//     jwt.verify(token, secretKey, (err, decoded) => {
-//       if (err) {
-//         console.error("Token verification failed:", err);
-//         return;
-//       }
-
-//       // Access the userId from the decoded token
-//       userId = decoded.userId; // Adjust the key according to your token payload
-//     });
-//     const newNote = new Note({
-//       title: req.body.title,
-//       content: req.file.filename,
-//       authorId: userId,
-//       code: req.body.code,
-//       name: req.body.name,
-//       description: req.body.description,
-//     });
-
-//     if (newNote) {
-//       await newNote.save();
-//       await User.findByIdAndUpdate(
-//         userId,
-//         { $push: { posts: newNote._id } },
-//         { new: true } // This returns the updated document
-//       );
-//       return res.json({ message: "File uploaded successfully", success: 1 });
-//     }
-//   } catch (err) {
-//     console.log(err.message);
-//     return res.status(500).json({ error: err.message });
-//   }
-// });
-
-app.post("/api/upload-pdf", upload.single("file"), async (req, res) => {
-  try {
-    const token = req.cookies.jwt; // Ensure the JWT is being sent as a cookie
-    const secretKey = process.env.JWT_SECRET_KEY;
-
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    let userId;
-
-    // Verify the token
-    jwt.verify(token, secretKey, (err, decoded) => {
-      if (err) {
-        console.error("Token verification failed:", err);
-        return res.status(403).json({ message: "Token is not valid" });
-      }
-      userId = decoded.userId; // Adjust according to your token payload
-    });
-
-    // Check if userId is null or undefined
-    // console.log("User ID:", userId);
-    if (!userId) {
-      return res.status(400).json({ message: "User ID not found in token" });
-    }
-
-    const newNote = new Note({
-      title: req.body.title,
-      content: req.file.filename,
-      authorId: userId,
-      code: req.body.code,
-      name: req.body.name,
-      description: req.body.description,
-    });
-
-    if (newNote) {
-      await newNote.save();
-      await User.findByIdAndUpdate(
-        userId,
-        { $push: { posts: newNote._id } },
-        { new: true } // This returns the updated document
-      );
-      return res.json({ message: "File uploaded successfully", success: 1 });
-    }
-  } catch (err) {
-    console.log(err.message);
-    return res.status(500).json({ error: err.message });
-  }
-});
+app.use("/api/upload", uploadRoutes);
 
 app.get("/api/notes", async (req, res) => {
   try {
@@ -178,32 +61,6 @@ app.get("/api/notes", async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
-
-// app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
-//   try {
-//     // const filePath = req.file.path;
-
-//     const filePath = req.body.path;
-//     console.log(filePath);
-
-//     const formData = new FormData();
-//     formData.append("pdf", fs.createReadStream(filePath));
-
-//     const response = await fetch("http://127.0.0.1:4000/process-pdf", {
-//       method: "POST",
-//       headers: {
-//         ...formData.getHeaders(),
-//       },
-//       body: formData,
-//     }).then((res) => res.json());
-
-//     console.log(response);
-//   } catch (err) {
-//     console.log(err);
-//   } finally {
-//     // fs.unlinkSync(req.file.path);
-//   }
-// });
 
 app.patch("/notes/:id/reaction", async (req, res) => {
   const { id } = req.params;

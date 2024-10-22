@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { uploadFile } from "../controllers/uploadController.js";
+import { uploadNotes } from "../controllers/uploadController.js";
+import upload from "../utils/uploadNotes.js";
 
 const router = Router();
 
-router.post("/:id", uploadFile);
+router.post("/upload-pdf", upload.single("file"), uploadNotes);
 
 export default router;

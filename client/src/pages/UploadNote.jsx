@@ -25,7 +25,7 @@ const UploadNote = () => {
       formData.append("description", description);
       formData.append("name", name);
   
-      fetch(`${import.meta.env.VITE_SERVER_URL}/api/upload-pdf`, {
+      fetch(`${import.meta.env.VITE_SERVER_URL}/api/upload/upload-pdf`, {
           credentials: "include",
           method: "POST",
           body: formData
