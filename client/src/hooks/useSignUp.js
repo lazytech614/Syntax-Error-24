@@ -65,10 +65,10 @@ function handleInputs({
   gender,
   password,
   confirmPassword,
-  branch,
-  collegeName,
-  year,
-  city,
+  // branch,
+  // collegeName,
+  // year,
+  // city,
   phoneNumber,
   email,
 }) {
@@ -78,10 +78,10 @@ function handleInputs({
     !gender ||
     !password ||
     !confirmPassword ||
-    !branch ||
-    !collegeName ||
-    !year ||
-    !city ||
+    // !branch ||
+    // !collegeName ||
+    // !year ||
+    // !city ||
     !phoneNumber ||
     !email
   ) {

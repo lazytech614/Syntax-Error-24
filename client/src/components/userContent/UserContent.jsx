@@ -19,18 +19,18 @@ const UserContent = ({toggleMenu}) => {
           <div className='hidden md:block'>
             <p className='font-semibold text-[20px]'>{userInfo?.fullName}</p>
             <p className='text-gray-700'>{userInfo?.collegeName}</p>
-            <div className='flex gap-1'>
-              <p className='text-gray-700'>{userInfo?.branch} || </p> 
-              <p className='text-gray-700'>{userInfo?.year} year</p>
+            <div >
+              <p className='text-gray-700'>{userInfo?.branch} </p> 
+              <p className='text-gray-700'>{userInfo?.year !== 0 ? userInfo?.year + " year" : ""}</p>
             </div>
-            <p className='text-gray-500'>Resident of: {userInfo?.city}</p>
+            <p className={`${userInfo?.city !== '' ? "block" : "hidden"}`}>Resident of: {userInfo?.city}</p>
 
           </div>
           <img onClick={toggleMenu} className='block md:hidden w-[30px] cursor-pointer' src={menuBar} alt="" />
         </div>
         <div className='hidden md:block h-fit w-full bg-white rounded-md p-4 border-[1px] border-gray-300'>
           {userInfo?.posts.length > 0 ? <p>Total notes uploaded: {userInfo?.posts.length}</p> : <p>No notes uploaded yet.</p>}
-          <p>Rating: 4.5</p>
+          <p>{userInfo?.rating === 0 ? "No rating yet." : `Rating: ${userInfo?.rating}`}</p>
         </div>
         <div className='hidden md:flex h-fit w-full bg-white rounded-md p-4 flex-col gap-4 border-[1px] border-gray-300'>
           <button onClick={() => navigate('/profile')} className='h-[40px] w-[40%] md:w-[50%] bg-[#0a66c2] text-white text-xs rounded-sm px-2 py-1'>Profile details</button>

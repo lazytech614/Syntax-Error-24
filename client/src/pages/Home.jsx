@@ -70,9 +70,9 @@ const Home = () => {
                 content={note?.content}
                 name={note?.name}
                 description={note?.description}
-                Id={note._id}
-                initialLikes={note.likes}
-                initialDislikes={note.dislikes}
+                Id={note?._id}
+                initialLikes={note?.likes}
+                initialDislikes={note?.dislikes}
               />
             ))
           )}

@@ -11,13 +11,13 @@ const SignUp = () => {
         email: '',
         password: '',
         gender: '',
-        branch: '',
-        year: '',
-        city: '',
+        // branch: '',
+        // year: '',
+        // city: '',
         confirmPassword: '',
         phoneNumber: '',
         userName: '',
-        collegeName: '',
+        // collegeName: '',
     })
 
     const { signup, isLoading } = useSignUp();
@@ -101,7 +101,7 @@ const SignUp = () => {
           <div>
             <GenderDropdown setGender={setGender} />
           </div>
-          <div>
+          {/* <div>
             <input 
               id='collegeName' 
               type="text" 
@@ -111,8 +111,8 @@ const SignUp = () => {
               value={formData.collegeName}
               onChange={handleChange}
             />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <input 
               id='branch' 
               type="text" 
@@ -122,11 +122,11 @@ const SignUp = () => {
               value={formData.branch}
               onChange={handleChange}
             />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <YearDropdown setYear={setYear} />
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <input 
               id='city' 
               type="text" 
@@ -136,7 +136,7 @@ const SignUp = () => {
               value={formData.city}
               onChange={handleChange}
             />
-          </div>
+          </div> */}
           <div>
             <input 
               id='password' 

@@ -12,7 +12,7 @@ export const FeedContextProvider = ({ children }) => {
     useEffect(() => {
         const fetchFeed = async () => {
             try {   
-                fetch(`${import.meta.env.VITE_SERVER_URL}/api/notes`).then((res) => res.json()).then((data) => setFeed(data));
+                fetch(`${import.meta.env.VITE_SERVER_URL}/api/notes/all-notes`).then((res) => res.json()).then((data) => setFeed(data));
             } catch (error) {
                 console.error("Error fetching feed:", error);
             }

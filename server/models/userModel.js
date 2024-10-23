@@ -25,17 +25,25 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    headLine: {
+      type: String,
+      default: "",
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
     branch: {
       type: String,
-      required: true,
+      default: "",
     },
     collegeName: {
       type: String,
-      required: true,
+      default: "",
     },
     year: {
       type: Number,
-      required: true,
+      default: 0,
     },
     email: {
       type: String,
@@ -45,9 +53,17 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    state: {
+      type: String,
+      default: "",
+    },
     city: {
       type: String,
-      required: true,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "",
     },
     posts: {
       type: [mongoose.Schema.Types.ObjectId], // Array of ObjectIds referencing posts

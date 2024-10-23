@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 
 // Signup controller
 export const signUp = async (req, res) => {
@@ -13,11 +14,11 @@ export const signUp = async (req, res) => {
       password,
       confirmPassword,
       gender,
-      branch,
-      year,
-      city,
+      // branch,
+      // year,
+      // city,
       phoneNumber,
-      collegeName,
+      // collegeName,
       email,
     } = req.body;
 
@@ -31,11 +32,6 @@ export const signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Generate random profile pic here based on gender
-    // const profilePic = `https://avatar.iran.liara.run/public/${
-    //   gender === "Male" ? "boy" : gender === "Female" ? "girl" : ""
-    // }?username=${userName}`;
-
     const profilePic = `https://avatar.iran.liara.run/public/${
       gender === "Male" ? "boy" : gender === "Female" ? "girl" : ""
     }?username=${userName}`;
@@ -45,11 +41,11 @@ export const signUp = async (req, res) => {
       userName,
       password: hashedPassword,
       gender,
-      branch,
-      year,
-      city,
+      // branch,
+      // year,
+      // city,
       phoneNumber,
-      collegeName,
+      // collegeName,
       profilePic,
       email,
     });
@@ -84,6 +80,8 @@ export const signIn = async (req, res) => {
       userName: { $regex: new RegExp(`^${userName}$`, "i") },
     });
 
+    // console.log(user._id);
+
     if (!user) {
       return res.status(400).json({ message: "User not found", success: 0 });
     }
@@ -109,16 +107,7 @@ export const signIn = async (req, res) => {
   }
 };
 
-// export const logOut = (req, res) => {
-//   try {
-//     res.cookie("jwt", "", { maxAge: 0 });
-//     res.status(200).json({ message: "Logged out successfully" });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// };
-
+// logOut controller
 export const logOut = (req, res) => {
   try {
     // Clear the JWT cookie by using res.clearCookie
@@ -131,5 +120,50 @@ export const logOut = (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Update profile controller
+export const updateUserDetails = async (req, res) => {
+  try {
+    const token = req.cookies.jwt; // Ensure the JWT is being sent as a cookie
+    const secretKey = process.env.JWT_SECRET_KEY; // Tking secret key from the environment variable
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+    const userId = decoded.userId;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Get the fields from the request body that the user wants to update
+    const { headLine, bio, branch, collegeName, year, state, city, country } =
+      req.body;
+
+    if (headLine) user.headLine = headLine;
+    if (bio) user.bio = bio;
+    if (branch) user.branch = branch;
+    if (collegeName) user.collegeName = collegeName;
+    if (year) user.year = year;
+    if (state) user.state = state;
+    if (city) user.city = city;
+    if (country) user.country = country;
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

@@ -52,3 +52,17 @@ export const uploadNotes = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+export const getAllNotes = async (req, res) => {
+  try {
+    const notes = await Note.find().populate({
+      path: "authorId", // Populate the 'authorId' field
+      select: "fullName profilePic branch year collegeName", // Only select these fields from the User model
+    });
+
+    res.json(notes);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ error: err.message });
+  }
+};
