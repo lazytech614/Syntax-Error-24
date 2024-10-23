@@ -55,8 +55,6 @@ const Home = () => {
     );
   });
 
-  console.log(filteredFeed[0]);
-
   return (
     <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 lg:px-40 xl:px-60 py-6'>
       {/* Sidebar */}

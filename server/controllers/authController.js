@@ -144,8 +144,17 @@ export const updateUserDetails = async (req, res) => {
     }
 
     // Get the fields from the request body that the user wants to update
-    const { headLine, bio, branch, collegeName, year, state, city, country } =
-      req.body;
+    const {
+      headLine,
+      bio,
+      branch,
+      collegeName,
+      year,
+      state,
+      city,
+      country,
+      profilePic,
+    } = req.body;
 
     if (headLine) user.headLine = headLine;
     if (bio) user.bio = bio;
@@ -155,6 +164,7 @@ export const updateUserDetails = async (req, res) => {
     if (state) user.state = state;
     if (city) user.city = city;
     if (country) user.country = country;
+    if (profilePic) user.profilePic = profilePic;
 
     // Save the updated user
     const updatedUser = await user.save();

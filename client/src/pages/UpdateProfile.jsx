@@ -6,7 +6,7 @@ const UpdateProfile = () => {
   const [userDetails, setUserDetails] = useState({
     // fullName: '',
     // userName: '',
-    // profilePic: '',
+    profilePic: '',
     headLine: '',
     bio: '',
     branch: '',
@@ -155,6 +155,16 @@ const UpdateProfile = () => {
               type="text"
               name="country"
               value={userDetails.country}
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0a66c2]"
+            />
+          </div>
+          <div className={`flex flex-col ${section === 'profilePic' ? '' : 'hidden'}`}>
+            <label className="text-sm text-gray-600">Profile Picture</label>
+            <input
+              type="file"
+              name="profilePic"
+              value={userDetails.profilePic}
               onChange={handleChange}
               className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0a66c2]"
             />

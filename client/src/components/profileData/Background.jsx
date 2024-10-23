@@ -19,10 +19,10 @@ const Background = () => {
                 className="w-[80px] sm:w-[120px]"
                 alt=""
             />
+            {/* <Link to="/update-profile" state={{ section: 'profilePic' }} className='z-[2] absolute bottom-0 -right-2 text-white'>
+                <img className='sm:w-[30px]' src={pencil} alt="" />
+            </Link> */}
         </div>
-        {/* <Link to="/update-profile" className='absolute bottom-0 md:-bottom-2 right-4 text-white'>
-            <img className='sm:w-[30px]' src={pencil} alt="" />
-        </Link> */}
     </div>
   )
 }

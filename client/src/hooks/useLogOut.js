@@ -22,6 +22,8 @@ const useLogOut = () => {
       if (data.error) throw new Error(data.error);
 
       localStorage.removeItem("user");
+      localStorage.removeItem("isLikeClicked");
+      localStorage.removeItem("isDislikeClicked");
       setAuthUser(null);
       toast.success("Logged out successfully");
     } catch (err) {
