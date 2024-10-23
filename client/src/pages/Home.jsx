@@ -25,10 +25,26 @@ const Home = () => {
     setSearchQuery(query);
   };
 
+  // Function to handle likes/dislikes
+  const handleFeedback = async (noteId, action) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/notes/${noteId}/feedback`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action }), // action can be 'like' or 'dislike'
+      });
+      const data = await response.json();
+      console.log('Feedback updated:', data);
+    } catch (error) {
+      console.error('Error updating feedback:', error);
+    }
+  };
+
   useEffect(() => {
     getUsers();
   }, [getUsers]);
-
 
   const filteredFeed = feed.filter((note) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
@@ -38,6 +54,8 @@ const Home = () => {
       note.code.toLowerCase().includes(lowerCaseQuery)
     );
   });
+
+  console.log(filteredFeed[0]);
 
   return (
     <div className='h-screen flex flex-col md:flex-row justify-between gap-4 px-6 sm:px-20 lg:px-40 xl:px-60 py-6'>
@@ -49,22 +67,24 @@ const Home = () => {
 
       {/* Feed Content */}
       <div className='w-full md:w-[70%] flex flex-col gap-2'>
-        <SearchBar toggleMenu={toggleMenu} onSearch={handleSearch}/>
+        <SearchBar toggleMenu={toggleMenu} onSearch={handleSearch} />
         <div className='h-[1px] w-full bg-gray-300'></div>
         <div className='overflow-y-auto rounded-md h-[80vh] md:h-fit hide-scrollbar scroll-smooth'>
           {feed.length === 0 ? (
             <div>No notes available...</div>
           ) : (
-            filteredFeed.length > 0 && filteredFeed.map((note, index) => (
-              <FeedCard 
-                key={index} 
+            filteredFeed.length > 0 &&
+            filteredFeed.map((note, index) => (
+              <FeedCard
+                key={index}
                 noteId={note._id}
-                toggleDescription={() => toggleDescription(note._id)} 
-                isDescriptionExpanded={expandedNoteId === note._id} 
-                fullName={note?.authorId?.fullName} 
+                toggleDescription={() => toggleDescription(note._id)}
+                isDescriptionExpanded={expandedNoteId === note._id}
+                fullName={note?.authorId?.fullName}
+                headLine={note?.authorId?.headLine}
                 branch={note?.authorId?.branch}
-                collegeName={note?.authorId?.collegeName} 
-                city={note?.authorId?.city} 
+                collegeName={note?.authorId?.collegeName}
+                city={note?.authorId?.city}
                 profilePic={note?.authorId?.profilePic}
                 title={note?.title}
                 content={note?.content}
@@ -73,6 +93,7 @@ const Home = () => {
                 Id={note?._id}
                 initialLikes={note?.likes}
                 initialDislikes={note?.dislikes}
+                onFeedback={handleFeedback} // Pass the feedback handler
               />
             ))
           )}

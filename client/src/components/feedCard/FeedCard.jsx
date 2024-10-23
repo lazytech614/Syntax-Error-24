@@ -7,41 +7,64 @@ import comment from '/comment.svg';
 import download from '/download-line.svg';
 import { previewImages } from '../../constants/previewImages';
 
-const FeedCard = ({ noteId, toggleDescription, isDescriptionExpanded, content, fullName, collegeName, branch, profilePic, name, description, initialLikes, initialDislikes, Id, title }) => {
+const FeedCard = ({ noteId, toggleDescription, isDescriptionExpanded, content, fullName, bio, collegeName, branch, profilePic, name, description, initialLikes, initialDislikes, Id, title, onFeedback }) => {
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);
-  const [isLikeClicked, setIsLikeClicked] = useState(false);
-  const [isDislikeClicked, setIsDislikeClicked] = useState(false);
-  const [isClicked, setIsClicked] = useState(false)
 
-  // console.log("Isclicked", isClicked);
-  
+  const [isLikeClicked, setIsLikeClicked] = useState(() => {
+    const savedLike = localStorage.getItem("isLikeClicked");
+    return savedLike ? JSON.parse(savedLike) : false;
+  });
+
+  const [isDislikeClicked, setIsDislikeClicked] = useState(() => {
+    const savedDislike = localStorage.getItem("isDislikeClicked");
+    return savedDislike ? JSON.parse(savedDislike) : false;
+  });
+
   const pdfUrl = `http://localhost:3000/uploads/${encodeURIComponent(content)}`;
-
   const imageUrl = previewImages.find((image) => image.name.toLocaleLowerCase() === name.toLocaleLowerCase())?.image;
 
-  const handleReaction = async (type) => {
-    try {
-      const response = await fetch(`http://localhost:3000/notes/${Id}/reaction`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ type }),
-      });
+  const handleLike = () => {
+    const updatedLikeState = !isLikeClicked;
+    setIsLikeClicked(updatedLikeState);
+    localStorage.setItem("isLikeClicked", JSON.stringify(updatedLikeState));
 
-      if (response.ok) {
-        const updatedNote = await response.json();
-        if (type === 'like') {
-          setLikes(updatedNote.likes);
-        } else {
-          setDislikes(updatedNote.dislikes);
-        }
-      } else {
-        console.error("Error updating reaction", response.statusText);
+    if (updatedLikeState) {
+      setLikes(likes + 1);
+      onFeedback(noteId, 'like');
+
+      // If liked, reset dislike
+      if (isDislikeClicked) {
+        setIsDislikeClicked(false);
+        localStorage.setItem("isDislikeClicked", JSON.stringify(false));
+        setDislikes(dislikes - 1);
+        onFeedback(noteId, 'remove-dislike');
       }
-    } catch (error) {
-      console.error("Error updating reaction", error);
+    } else {
+      setLikes(likes - 1);
+      onFeedback(noteId, 'remove-like');
+    }
+  };
+
+  const handleDislike = () => {
+    const updatedDislikeState = !isDislikeClicked;
+    setIsDislikeClicked(updatedDislikeState);
+    localStorage.setItem("isDislikeClicked", JSON.stringify(updatedDislikeState));
+
+    if (updatedDislikeState) {
+      setDislikes(dislikes + 1);
+      onFeedback(noteId, 'dislike');
+
+      // If disliked, reset like
+      if (isLikeClicked) {
+        setIsLikeClicked(false);
+        localStorage.setItem("isLikeClicked", JSON.stringify(false));
+        setLikes(likes - 1);
+        onFeedback(noteId, 'remove-like');
+      }
+    } else {
+      setDislikes(dislikes - 1);
+      onFeedback(noteId, 'remove-dislike');
     }
   };
 
@@ -66,14 +89,19 @@ const FeedCard = ({ noteId, toggleDescription, isDescriptionExpanded, content, f
         title="Click to expand/collapse"
       >
         {description}
-        {/* {!isDescriptionExpanded && <span className='absolute right-0 bottom-0'>...</span>} */}
       </div>
-      <div className='h-[400px] overflow-hidden'>{imageUrl ? <img className='w-full bg-cover' src={imageUrl} alt="" /> : <img className='w-full bg-cover' src="https://th.bing.com/th/id/R.812ae5dbc4266a4d4e385ad6dd2c6028?rik=uIYfGPeflv4hBQ&riu=http%3a%2f%2fwww.pptgrounds.com%2fwp-content%2fuploads%2f2014%2f02%2fStudy-Book-and-Lights-Templates.jpg&ehk=dxZ54u5uxLJnMcnZUPFarIIfirGHwNeTbRW6OZQR%2f%2fk%3d&risl=&pid=ImgRaw&r=0" alt="" />}</div>
+      <div className='h-[400px] overflow-hidden'>
+        {imageUrl ? (
+          <img className='w-full bg-cover' src={imageUrl} alt="" />
+        ) : (
+          <img className='w-full bg-cover' src="https://th.bing.com/th/id/R.812ae5dbc4266a4d4e385ad6dd2c6028?rik=uIYfGPeflv4hBQ&riu=http%3a%2f%2fwww.pptgrounds.com%2fwp-content%2fuploads%2f2014%2f02%2fStudy-Book-and-Lights-Templates.jpg&ehk=dxZ54u5uxLJnMcnZUPFarIIfirGHwNeTbRW6OZQR%2f%2fk%3d&risl=&pid=ImgRaw&r=0" alt="" />
+        )}
+      </div>
       <div className='h-[1px] w-full bg-gray-300'></div>
       <div className='relative flex gap-4'>
-        <img onClick={() => {handleReaction('like'); setIsLikeClicked(!isLikeClicked)}} className='h-[20px] cursor-pointer' src={isLikeClicked?thumbsUpFill:thumbsUpLine} alt="Like" />
+        <img onClick={handleLike} className='h-[20px] cursor-pointer' src={isLikeClicked ? thumbsUpFill : thumbsUpLine} alt="Like" />
         <span>{likes}</span>
-        <img onClick={() => {handleReaction('dislike'); setIsDislikeClicked(!isDislikeClicked)}} className='h-[20px] cursor-pointer' src={isDislikeClicked?thumbsDownFill:thumbsDownLine} alt="Dislike" />
+        <img onClick={handleDislike} className='h-[20px] cursor-pointer' src={isDislikeClicked ? thumbsDownFill : thumbsDownLine} alt="Dislike" />
         <span>{dislikes}</span>
         <img className='h-[20px] cursor-pointer' src={comment} alt="" />
         <img onClick={() => window.open(pdfUrl, '_blank')} className='absolute right-0 h-[20px] cursor-pointer' src={download} alt="" />

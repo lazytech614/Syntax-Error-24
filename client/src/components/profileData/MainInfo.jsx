@@ -9,7 +9,7 @@ const MainInfo = () => {
 
   return (
             <div className="relative lg:w-[100%] flex flex-col gap-1 p-4">
-              <p className="font-semibold text-2xl">{userInfo?.fullName}</p>
+              <p className="font-semibold text-2xl lg:mt-2">{userInfo?.fullName}</p>
               <p className="text-base text-gray-700">
                 {userInfo?.headLine}
               </p>

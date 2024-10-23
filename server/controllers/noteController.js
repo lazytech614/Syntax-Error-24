@@ -66,3 +66,35 @@ export const getAllNotes = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+export const updateNoteFeedback = async (req, res) => {
+  const { noteId } = req.params;
+  const { action } = req.body; // 'like' or 'dislike'
+
+  // console.log("Inside this");
+
+  try {
+    const note = await Note.findById(noteId);
+
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
+    if (action === "like") {
+      note.likes += 1; // Increment likes
+    } else if (action === "dislike") {
+      note.dislikes += 1; // Increment dislikes
+    } else if (action === "remove-like") {
+      note.likes -= 1;
+    } else if (action === "remove-dislike") {
+      note.dislikes -= 1;
+    } else {
+      return res.status(400).json({ message: "Invalid action" });
+    }
+
+    await note.save();
+    res.status(200).json({ message: "Feedback updated successfully", note });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
