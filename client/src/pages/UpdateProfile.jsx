@@ -65,7 +65,7 @@ const UpdateProfile = () => {
       toast.success('Profile updated successfully');
       navigate('/profile');
     } catch (error) {
-      setError(error.message);
+      // setError(error.message);
       toast.error(error.message);
     } finally {
       setLoading(false);
