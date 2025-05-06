@@ -15,7 +15,7 @@ const port = process.env.PORT || 5000;
 app.use("/uploads", express.static("uploads"));
 
 const allowedOrigins = [
-  "http://localhost:5173", // Local development
+  "http://localhost:5174", // Local development
   "https://spontaneous-stardust-0bdf9a.netlify.app/", // Netlify production
 ];
 
